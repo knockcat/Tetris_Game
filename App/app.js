@@ -1,3 +1,17 @@
+let canvas = document.querySelector("#tetris");
+let ctx = canvas.getContext("2d");
+let scoreBoard = document.querySelector("h2");
+ctx.scale(30, 30);
+
+const ROWS = 20;
+const COLS = 10;
+
+let grid = generateGrid();
+let score = 0;
+
+
+let pieceObj = null;
+
 const SHAPES = [
     [
         [0, 1, 0, 0],
@@ -54,22 +68,10 @@ const COLORS = [
     "#d64e12"
 ]
 
-const ROWS = 20;
-const COLS = 10;
-
-let grid = generateGrid();
-let score = 0;
-
-let canvas = document.querySelector("#tetris");
-let ctx = canvas.getContext("2d");
-let scoreBoard = document.querySelector("h2");
-ctx.scale(30, 30);
-
-let pieceObj = null;
 
 setInterval(newGameState, 500);
 
-console.log(pieceObj);
+// console.log(pieceObj);
 
 function newGameState() {
     checkGrid();
@@ -84,14 +86,16 @@ function checkGrid() {
     let count = 0;
     for (let i = 0; i < grid.length; ++i) {
         let allFilled = true;
-        for (let j = 0; j < grid[i].length; ++j) {
+        for (let j = 0; j < grid[0].length; ++j) {
             if (grid[i][j] == 0)
                 allFilled = false;
         }
-    }
-    if (allFilled) {
-        grid.splice(i, 1);
-        grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+        if (allFilled) {
+            ++count;
+            grid.splice(i, 1);
+            grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        }
     }
 
     if (count == 1)
@@ -104,6 +108,17 @@ function checkGrid() {
         score += 100;
 
     scoreBoard.innerHTML = "Score : " + score;
+}
+
+function generateGrid() {
+    let grid = [];
+    for (let i = 0; i < ROWS; ++i) {
+        grid.push([]);
+        for (let j = 0; j < COLS; ++j) {
+            grid[i].push(0);
+        }
+    }
+    return grid;
 }
 
 function generateRandomPiece() {
@@ -176,7 +191,7 @@ function rotate() {
     // take transpose
 
     for (let i = 0; i < piece.length; ++i) {
-        for (let j = 0; j < piece.length; ++j) {
+        for (let j = 0; j < piece[i].length; ++j) {
             rotatedPiece[i][j] = piece[j][i];
         }
     }
@@ -188,7 +203,7 @@ function rotate() {
 
     // Checking collision of Rotated Piece 
     if (!collision(pieceObj.x, pieceObj.y, rotatedPiece))
-        pieceObj = rotatedPiece;
+        pieceObj.piece = rotatedPiece;
     renderGrid();
 }
 
@@ -207,21 +222,11 @@ function collision(x, y, rotatedPiece) {
                     return true;
                 }
             }
-            return false;
         }
     }
+    return false;
 }
 
-function generateGrid() {
-    let grid = [];
-    for (let i = 0; i < ROWS; ++i) {
-        grid.push([]);
-        for (let j = 0; j < COLS; ++j) {
-            grid[i].push(0);
-        }
-    }
-    return grid;
-}
 
 function renderGrid() {
     for (let i = 0; i < grid.length; ++i) {
@@ -234,7 +239,7 @@ function renderGrid() {
     renderPiece();
 }
 
-document.addEventListener("keydown", function(e)) {
+document.addEventListener("keydown", function(e) {
     let key = e.code();
     if (key == "ArrowDown")
         moveDown();
@@ -244,4 +249,4 @@ document.addEventListener("keydown", function(e)) {
         moveRight();
     else if (key == "ArrowUp")
         rotate();
-}
+})
