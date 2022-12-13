@@ -1,6 +1,13 @@
 # Tetris_Game
 Tetris Game using JavaScript, HTML and CSS
 
+Play the Game in browser via ⏭️
+Copy the Following Link and Open in your Browser.
+
+```
+https://knockcat.github.io/Tetris_Game/
+```
+
     HOW TO PLAY ⏭️
 ```  
   ⬆️ Up-Arrow (Rotate)
@@ -13,18 +20,16 @@ Tetris Game using JavaScript, HTML and CSS
  
  ```
   1. Clone the repository ©️
-  
         Open Terminal on a New Empty Folder.
         copy the following command on the terminal and Enter ->
 ```   
-
-https://github.com/knockcat/Tetris_Game.git
-
 ```
-
+https://github.com/knockcat/Tetris_Game.git
+```
+```
   (an Folder with Tetris_Game will be automatically Created)
        
-  2. Oven The Created Folder via VsCode 🆚
+  2. Open The Created Folder via VsCode 🆚
   
   3. Play The Game by open with Live Server on LocalHost 🎭▶️⏯️
 ```
