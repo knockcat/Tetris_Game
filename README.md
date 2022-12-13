@@ -1,9 +1,37 @@
 # Tetris_Game
 Tetris Game using JavaScript, HTML and CSS
 
-# 1. Clone the repository
-# 2. Oven via VsCode
-# 2. play The Game
+    HOW TO PLAY ⏭️
+```  
+  ⬆️ Up-Arrow (Rotate)
+  ⬅️ Left-Arrow (Move Left)
+  ➡️ Right-Arrow (Move Right)
+  ⬇️ Down-Arrow (Increase Down Speed)
+```
 
-# Dsa Implementation 
-  Rotate Matrix by 90 degrees.
+  Steps To Setup on Your Device 😀
+ 
+ ```
+  1. Clone the repository ©️
+  
+        Open Terminal on a New Empty Folder.
+        copy the following command on the terminal and Enter ->
+```   
+
+https://github.com/knockcat/Tetris_Game.git
+
+```
+
+  (an Folder with Tetris_Game will be automatically Created)
+       
+  2. Oven The Created Folder via VsCode 🆚
+  
+  3. Play The Game by open with Live Server on LocalHost 🎭▶️⏯️
+```
+
+# Dsa in Role 
+  Rotate Matrix by 90 degrees 🤔⁉️❓❔
+  
+```
+  Up Arrow key (ROTATE) functionality uses the concept of Matrix Rotation.
+```
