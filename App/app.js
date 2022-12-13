@@ -71,11 +71,26 @@ setInterval(newGameState, 500);
 console.log(pieceObj);
 
 function newGameState() {
+    checkGrid();
     if (pieceObj == null) {
         pieceObj = generateRandomPiece();
         renderPiece();
     }
     moveDown();
+}
+
+function checkGrid() {
+    for (let i = 0; i < grid.length; ++i) {
+        let allFilled = true;
+        for (let j = 0; j < grid[i].length; ++j) {
+            if (grid[i][j] == 0)
+                allFilled = false;
+        }
+    }
+    if (allFilled) {
+        grid.splice(i, 1);
+        grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    }
 }
 
 function generateRandomPiece() {
@@ -159,14 +174,15 @@ function rotate() {
     for (let i = 0; i < rotatedPiece.length; ++i)
         rotatedPiece[i] = rotatedPiece[i].reverse();
 
+    // Checking collision of Rotated Piece 
     if (!collision(pieceObj.x, pieceObj.y, rotatedPiece))
         pieceObj = rotatedPiece;
     renderGrid();
 }
 
 
-function collision(x, y) {
-    let piece = pieceObj.piece;
+function collision(x, y, rotatedPiece) {
+    let piece = rotatedPiece || pieceObj.piece;
     for (let i = 0; i < piece.length; ++i) {
         for (let j = 0; j < piece[i].length; ++j) {
             if (piece[i][j] == 1) {
@@ -198,7 +214,7 @@ function generateGrid() {
 function renderGrid() {
     for (let i = 0; i < grid.length; ++i) {
         for (let j = 0; j < grid[i].length; ++j) {
-            ctx.fillStyle = COLORS[gird[i][j]];
+            ctx.fillStyle = COLORS[grid[i][j]];
             // filling cell with color white 
             ctx.fillRect(j, i, 1, 1);
         }
