@@ -62,6 +62,7 @@ let score = 0;
 
 let canvas = document.querySelector("#tetris");
 let ctx = canvas.getContext("2d");
+let scoreBoard = document.querySelector("h2");
 ctx.scale(30, 30);
 
 let pieceObj = null;
@@ -80,6 +81,7 @@ function newGameState() {
 }
 
 function checkGrid() {
+    let count = 0;
     for (let i = 0; i < grid.length; ++i) {
         let allFilled = true;
         for (let j = 0; j < grid[i].length; ++j) {
@@ -91,6 +93,17 @@ function checkGrid() {
         grid.splice(i, 1);
         grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     }
+
+    if (count == 1)
+        score += 10;
+    else if (count == 2)
+        score += 30;
+    else if (count == 3)
+        score += 50;
+    else if (count > 3)
+        score += 100;
+
+    scoreBoard.innerHTML = "Score : " + score;
 }
 
 function generateRandomPiece() {
@@ -102,8 +115,6 @@ function generateRandomPiece() {
     let y = 0;
     return { piece, colorIndex, x, y };
 }
-
-
 
 function renderPiece() {
     let piece = pieceObj.piece;
@@ -133,6 +144,7 @@ function moveDown() {
         if (pieceObj.y == 0) {
             alert("Game Over");
             grid = generateGrid();
+            score = 0;
         }
         pieceObj = null;
     }
