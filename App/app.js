@@ -113,12 +113,30 @@ function moveRight() {
     renderGrid();
 }
 
+function collision(x, y) {
+    let piece = pieceObj.piece;
+    for (let i = 0; i < piece.length; ++i) {
+        for (let j = 0; j < piece[i].length; ++j) {
+            if (piece[i][j] == 1) {
+                let p = x + j;
+                let q = y + i;
+                if (p >= 0 && p < COLS && q >= 0 && q < ROWS) {
+
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}
+
 function generateGrid() {
     let grid = [];
     for (let i = 0; i < ROWS; ++i) {
         grid.push([]);
         for (let j = 0; j < COLS; ++j) {
-            grid[i].push(i);
+            grid[i].push(0);
         }
     }
     return grid;
