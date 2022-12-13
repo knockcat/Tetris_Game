@@ -56,6 +56,8 @@ const COLORS = [
 
 const ROWS = 20;
 const COLS = 10;
+
+let grid = generateGrid();
 let score = 0;
 
 let canvas = document.querySelector("#tetris");
@@ -64,19 +66,9 @@ ctx.scale(30, 30);
 
 let pieceObj = null;
 
-console.log(pieceObj);
-
-function generateRandomPiece() {
-    let ran = Math.floor(Math.random() * 7);
-    // console.log(SHAPES[ran]);
-    let piece = SHAPES[ran];
-    let colorIndex = ran + 1;
-    let x = 4;
-    let y = 0;
-    return { piece, x, y, colorIndex };
-}
-
 setInterval(newGameState, 500);
+
+console.log(pieceObj);
 
 function newGameState() {
     if (pieceObj == null) {
@@ -85,6 +77,18 @@ function newGameState() {
     }
     moveDown();
 }
+
+function generateRandomPiece() {
+    let ran = Math.floor(Math.random() * 7);
+    // console.log(SHAPES[ran]);
+    let piece = SHAPES[ran];
+    let colorIndex = ran + 1;
+    let x = 4;
+    let y = 0;
+    return { piece, colorIndex, x, y };
+}
+
+
 
 function renderPiece() {
     let piece = pieceObj.piece;
@@ -99,19 +103,67 @@ function renderPiece() {
 }
 
 function moveDown() {
-    pieceObj.y += 1;
+    if (!collision(pieceObj.x, pieceObj.y + 1))
+        pieceObj.y += 1;
+    else {
+        for (let i = 0; i < pieceObj.piece.length; ++i) {
+            for (let j = 0; j < pieceObj.piece[i].length; ++j) {
+                if (pieceObj.piece[i][j] == 1) {
+                    let p = pieceObj.x + j;
+                    let q = pieceObj.y + i;
+                    grid[q][p] = pieceObj.colorIndex;
+                }
+            }
+        }
+        if (pieceObj.y == 0) {
+            alert("Game Over");
+            grid = generateGrid();
+        }
+        pieceObj = null;
+    }
     renderGrid();
 }
 
 function moveLeft() {
-    pieceObj.x -= 1;
+    if (!collision(pieceObj.x - 1, pieceObj.y))
+        pieceObj.x -= 1;
     renderGrid();
 }
 
 function moveRight() {
-    pieceObj.x += 1;
+    if (!collision(pieceObj.x + 1, pieceObj.y))
+        pieceObj.x += 1;
     renderGrid();
 }
+
+function rotate() {
+    let rotatedPiece = [];
+    let piece = pieceObj.piece;
+    for (let i = 0; i < piece.length; ++i) {
+        rotatedPiece.push([]);
+        for (let j = 0; j < piece[i].length; ++j) {
+            rotatedPiece[i].push(0);
+        }
+    }
+
+    // take transpose
+
+    for (let i = 0; i < piece.length; ++i) {
+        for (let j = 0; j < piece.length; ++j) {
+            rotatedPiece[i][j] = piece[j][i];
+        }
+    }
+
+    // revers every row;
+
+    for (let i = 0; i < rotatedPiece.length; ++i)
+        rotatedPiece[i] = rotatedPiece[i].reverse();
+
+    if (!collision(pieceObj.x, pieceObj.y, rotatedPiece))
+        pieceObj = rotatedPiece;
+    renderGrid();
+}
+
 
 function collision(x, y) {
     let piece = pieceObj.piece;
@@ -121,7 +173,8 @@ function collision(x, y) {
                 let p = x + j;
                 let q = y + i;
                 if (p >= 0 && p < COLS && q >= 0 && q < ROWS) {
-
+                    if (grid[q][p] > 0)
+                        return true;
                 } else {
                     return true;
                 }
