@@ -56,12 +56,14 @@ const COLORS = [
 
 const ROWS = 20;
 const COLS = 10;
+let score = 0;
 
 let canvas = document.querySelector("#tetris");
 let ctx = canvas.getContext("2d");
 ctx.scale(30, 30);
 
-let pieceObj = generateRandomPiece();
+let pieceObj = null;
+
 console.log(pieceObj);
 
 function generateRandomPiece() {
@@ -74,7 +76,15 @@ function generateRandomPiece() {
     return { piece, x, y, colorIndex };
 }
 
-renderPiece();
+setInterval(newGameState, 500);
+
+function newGameState() {
+    if (pieceObj == null) {
+        pieceObj = generateRandomPiece();
+        renderPiece();
+    }
+    moveDown();
+}
 
 function renderPiece() {
     let piece = pieceObj.piece;
@@ -82,12 +92,57 @@ function renderPiece() {
         for (let j = 0; j < piece[i].length; ++j) {
             if (piece[i][j] == 1) {
                 ctx.fillStyele = COLORS[pieceObj.colorIndex]
-                ctx.fillRect(pieceObj.x + j, i, 1, 1);
+                ctx.fillRect(pieceObj.x + j, pieceObj.y + i, 1, 1);
             }
         }
     }
 }
 
 function moveDown() {
+    pieceObj.y += 1;
+    renderGrid();
+}
 
+function moveLeft() {
+    pieceObj.x -= 1;
+    renderGrid();
+}
+
+function moveRight() {
+    pieceObj.x += 1;
+    renderGrid();
+}
+
+function generateGrid() {
+    let grid = [];
+    for (let i = 0; i < ROWS; ++i) {
+        grid.push([]);
+        for (let j = 0; j < COLS; ++j) {
+            grid[i].push(i);
+        }
+    }
+    return grid;
+}
+
+function renderGrid() {
+    for (let i = 0; i < grid.length; ++i) {
+        for (let j = 0; j < grid[i].length; ++j) {
+            ctx.fillStyle = COLORS[gird[i][j]];
+            // filling cell with color white 
+            ctx.fillRect(j, i, 1, 1);
+        }
+    }
+    renderPiece();
+}
+
+document.addEventListener("keydown", function(e)) {
+    let key = e.code();
+    if (key == "ArrowDown")
+        moveDown();
+    else if (key == "ArrowLeft")
+        moveLeft();
+    else if (key == "ArrowRight")
+        moveRight();
+    else if (key == "ArrowUp")
+        rotate();
 }
