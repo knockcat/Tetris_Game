@@ -1,6 +1,8 @@
 # Tetris_Game
 Tetris Game using JavaScript, HTML and CSS
 
+![image](https://user-images.githubusercontent.com/85362504/207511198-9e4537ef-2456-4de2-b64e-cc18e6fcbdc0.png)
+
 Play the Game in browser via ⏭️
 Copy the Following Link and Open in your Browser.
 
